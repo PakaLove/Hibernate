@@ -17,18 +17,20 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void createUsersTable() {
+        final String SQL = "CREATE TABLE user (ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT, NAME VARCHAR(50),LASTNAME VARCHAR (50), AGE INT)";
         try {
-            PreparedStatement preparedStatement = util.getConnection().prepareStatement("CREATE TABLE user (ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT, NAME VARCHAR(50),LASTNAME VARCHAR (50), AGE INT)");
-            preparedStatement.execute();
+            Statement statement = util.getConnection().createStatement();
+            statement.execute(SQL);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     public void dropUsersTable() {
+        final String SQL = "DROP TABLE user";
         try {
-            PreparedStatement preparedStatement = util.getConnection().prepareStatement("DROP TABLE user");
-            preparedStatement.execute();
+            Statement statement = util.getConnection().createStatement();
+            statement.execute(SQL);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -52,7 +54,6 @@ public class UserDaoJDBCImpl implements UserDao {
     public void removeUserById(long id) {
         try {
             PreparedStatement preparedStatement = util.getConnection().prepareStatement("DELETE * FROM user WHERE id=?");
-
             preparedStatement.setLong(1, id);
             preparedStatement.execute();
         } catch (SQLException e) {
