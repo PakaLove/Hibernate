@@ -9,10 +9,8 @@ import java.util.List;
 
 public class UserDaoJDBCImpl implements UserDao {
     Util util = new Util();
-    Statement statement = util.getConnection().createStatement();
-    PreparedStatement preparedStatement = null;
 
-    public UserDaoJDBCImpl() throws SQLException {
+    public UserDaoJDBCImpl(){
 
     }
 
@@ -64,9 +62,8 @@ public class UserDaoJDBCImpl implements UserDao {
     public List<User> getAllUsers() {
         List<User> person = new ArrayList<>();
         try {
-            Statement statement = util.getConnection().createStatement();
-            String SQL = "SELECT * FROM user";
-            ResultSet resultSet = statement.executeQuery(SQL);
+            PreparedStatement preparedStatement = util.getConnection().prepareStatement("SELECT * FROM user");
+            ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
                 User user = new User();
@@ -86,9 +83,9 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void cleanUsersTable() {
-        final String SQL = "DELETE FROM user";
         try {
-            statement.execute(SQL);
+            PreparedStatement preparedStatement = util.getConnection().prepareStatement("DELETE FROM user");
+            preparedStatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
         }
